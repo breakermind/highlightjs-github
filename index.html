@@ -1,0 +1,153 @@
+<head>
+<!-- 
+<link rel="stylesheet" href="styles/base16/github.min.css"> 
+<link rel="stylesheet" href="styles/mono-blue.min.css">
+<link rel="stylesheet" href="styles/base16/dracula.min.css">
+<link rel="stylesheet" href="styles/atom-one-dark.min.css">
+<link rel="stylesheet" href="styles/atom-one-light.min.css">
+<link rel="stylesheet" href="styles/base16/material-palenight.min.css">
+<link rel="stylesheet" href="styles/base16/heetch-dark.min.css">
+<link rel="stylesheet" href="styles/base16/mellow-purple.min.css">
+<link rel="stylesheet" href="styles/base16/green-screen.min.css">
+-->
+
+<link rel="stylesheet" href="styles/base16/github.min.css">
+<script src="highlight.min.js"></script>
+
+<script>
+// Highlight all
+// hljs.highlightAll();
+
+// Custom
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.querySelectorAll('pre code').forEach((el) => {
+        hljs.highlightElement(el);
+    });
+});
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+* {        
+    color: #183691;
+}
+body {
+    margin: 0px;
+    padding: 20px;
+    font-family: 'Noto Sans', sans-serif;
+}
+a {
+    text-decoration: none;
+    background: #fff;
+    color: #ff2255;
+}
+a:hover {
+    color: #55cc55;
+}
+pre {
+    margin: 0px;
+}
+.codebox {
+    float: left;
+    width: 98%;
+    margin: 10px 1%;
+}
+.codetitle {
+    display: flex;
+    color: #0048ab;
+    padding: 10px 10px;
+    margin: 20px 0px 0px 0px;
+    background: #00339904;
+    border: 1px solid #00339911;  
+    border-bottom: 0px;
+    border-radius: 6px 6px 0px 0px;
+    font-weight: 700;
+    font-size: 14px;
+}
+.codeicon {
+    height: 20px;
+    margin-right: 10px
+}
+
+.hljs {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #00339911;    
+    border-radius: 0px 0px 6px 6px;
+    background: #00339901
+}
+</style>
+</head>
+<body>
+
+<h1> Highlightjs documentation </h1>
+<a href="https://highlightjs.org/usage/" target="_blank"> https://highlightjs.org/usage </a>
+
+<h2> Styles demo </h2>
+<a href="https://highlightjs.org/static/demo/" target="_blank"> https://highlightjs.org/static/demo </a>
+
+<h3> Html entity encoder/decoder </h3>
+<a href="https://mothereff.in/html-entities" target="_blank"> https://mothereff.in/html-entities </a>
+
+
+<div class="codebox">
+<div class="codetitle" title="Php model class"> <img class="codeicon" src="https://img.icons8.com/color/344/file.png"> app/Models/Area.php </div>
+<pre><code class="php hljs language-php">&#x3C;?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+use App\Models\Restaurant;
+
+class Area extends Model
+{
+&#x9;use HasFactory, SoftDeletes;
+
+&#x9;protected $table = &#x27;areas&#x27;;
+
+&#x9;protected $guarded = [];
+
+&#x9;protected $hidden = [
+&#x9;&#x9;&#x27;updated_at&#x27;,
+&#x9;&#x9;&#x27;deleted_at&#x27;
+&#x9;];
+
+&#x9;protected $casts = [
+&#x9;&#x9;&#x27;created_at&#x27; =&#x3E; &#x27;datetime:Y-m-d&#x27;,
+&#x9;];
+
+&#x9;function restaurant() {
+&#x9;&#x9;return $this-&#x3E;belongsTo(Restaurant::class);
+&#x9;}
+
+&#x9;function setPolygonAttribute($geo_json)
+&#x9;{
+&#x9;&#x9;$this-&#x3E;attributes[&#x27;polygon&#x27;] = DB::raw(&#x22;ST_GeomFromGeoJSON(&#x27;&#x22;.$geo_json.&#x22;&#x27;)&#x22;);
+&#x9;}
+
+&#x9;function getPolygonAttribute()
+&#x9;{
+&#x9;&#x9;return $this-&#x3E;selectRaw(&#x27;ST_AsGeoJSON(polygon) as poly&#x27;)-&#x3E;where(&#x27;id&#x27;,$this-&#x3E;id)-&#x3E;first()-&#x3E;poly;
+&#x9;}
+
+&#x9;// Delete below
+&#x9;function polygonUpdate($geo_json) {
+&#x9;&#x9;$this-&#x3E;polygon = DB::raw(&#x22;ST_GeomFromGeoJSON(&#x27;&#x22;.$geo_json.&#x22;&#x27;)&#x22;);
+&#x9;}
+  
+&#x9;// Delete below
+&#x9;function geoJsonPolySample()
+&#x9;{
+&#x9;&#x9;return &#x27;{&#x22;type&#x22;: &#x22;Polygon&#x22;, &#x22;coordinates&#x22;: [[[21.01752050781249, 52.16553065086626], [21.018035491943348, 52.12265533376558], [21.079490264892566, 52.12697633873785], [21.06421240234374, 52.143413406069634], [21.052024444580066, 52.154473402050264], [21.043269714355457, 52.15647444111914], [21.032626708984363, 52.16711003359743], [21.01752050781249, 52.16553065086626]]]}&#x27;;
+&#x9;}
+}    
+</code></pre>
+</div>
+
+</body>
